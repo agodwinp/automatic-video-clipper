@@ -9,7 +9,7 @@ import time
 from moviepy.video.io.ffmpeg_tools import ffmpeg_extract_subclip
 import os
 
-original_video = "main_1.mp4"
+original_video = "main_2.mp4"
 output_path = "/Volumes/ARUN'S USB/YouTube/Uni 2020 Tips/clips/"
 
 def setdiff_sorted(array1,array2,assume_unique=False):
