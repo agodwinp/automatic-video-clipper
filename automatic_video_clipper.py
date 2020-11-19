@@ -9,10 +9,10 @@ import time
 from moviepy.video.io.ffmpeg_tools import ffmpeg_extract_subclip
 import os
 
-original_video = "main_2.mp4"
-output_path = "/Volumes/ARUN'S USB/YouTube/Uni 2020 Tips/clips/"
+original_video = "video.mp4"
+output_path = "/Volumes/ARUN'S USB/YouTube/AI Video Clipper"+"/clips/"
 
-def setdiff_sorted(array1,array2,assume_unique=False):
+def setdiff_sorted(array1, array2, assume_unique=False):
     ans = np.setdiff1d(array1,array2,assume_unique).tolist()
     if assume_unique:
         return sorted(ans)
@@ -62,7 +62,13 @@ def smooth_signal(signal, rate, window=40000):
     plt.show()
     input("~~~ Press Enter to continue...")
     # let user choose cutoff
-    cutoff = int(input("~~~ What do you want the cutoff to be? "))
+    while True:
+        try:
+            cutoff = int(input("~~~ What do you want the cutoff to be? "))
+            break
+        except:
+            print("~~~ [Please enter a numeric value...]")
+            continue
     print("- Analysing signal")
     remove_idx = [i for i, v in enumerate(sma["sma"]) if v < cutoff]
     keep_idx = setdiff_sorted(range(len(signal)), remove_idx)
@@ -97,9 +103,14 @@ def smooth_signal(signal, rate, window=40000):
 def clip_video(secs_to_keep):
     print("- Creating output video clips")
     secs_to_keep.reverse()
+    # check if output path exists and clear
+    if os.path.exists(output_path):
+        for filename in os.listdir(output_path):
+            if "._" not in filename[:2]:
+                os.remove(output_path+filename)
     if not os.path.exists(output_path):
         os.makedirs(output_path)
-
+    # start clipping
     i = 0
     old_stdout = sys.stdout
     num_clips = len(secs_to_keep)/2
